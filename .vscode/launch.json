@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "fivetran_stack:FiveTranWebhook",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 5858,
+      "localRoot": "${workspaceFolder}/infrastructure/.aws-sam/build/FiveTranWebhook",
+      "remoteRoot": "/var/task",
+      "protocol": "inspector",
+      "stopOnEntry": false,
+      "outFiles": [
+        "${workspaceFolder}/infrastructure/.aws-sam/build/FiveTranWebhook/**/*.js"
+      ],
+      "sourceMaps": true,
+      "skipFiles": [
+        "/var/runtime/**/*.js",
+        "<node_internals>/**/*.js"
+      ]
+    }
+  ]
+}

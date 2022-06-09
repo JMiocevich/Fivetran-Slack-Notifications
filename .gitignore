@@ -1,0 +1,51 @@
+# OS-specific dirs
+.DS_Store
+
+# Runtime dependencies
+node_modules/
+
+# Build output
+dist/
+.build/**
+!.build/.gitignore
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Caches
+.npm
+.eslintcache
+
+
+# Dotenv environment variables file
+.env
+.env.test
+
+# Ignore Python byte-compiled fiels
+__pycache__/
+
+# Mac files
+**/.DS_Store
+
+# SAM build files
+.aws-sam
+build.toml
+
+# Coverage html files
+coverage_html/**
+!coverage_html/.gitignore
+
+# Lambda layer build files
+**/layer_*/python/**
+!**/layer_*/python/.gitignore
+
+#
+.cache
+.build
+coverage
+lib

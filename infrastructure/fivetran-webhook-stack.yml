@@ -1,0 +1,91 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+ fivetran webhook stack
+
+Globals:
+  Function:
+    Timeout: 3
+    Tracing: Active
+    Runtime: nodejs14.x
+
+Resources:
+
+  FiveTranWebhook:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../src/lambdas/lambdaWebhook/
+      Handler: lambdaHandler.handler
+      Events:
+        fiveTranApi:
+          Type: Api
+          Properties:
+            Method: POST
+            Path: "/"
+            RestApiId: !Ref FiveTranWebhookRestApi
+      Policies:
+        - KMSDecryptPolicy:        
+            KeyId: !Ref KMSKey
+        - AWSLambdaBasicExecutionRole
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn: !Ref SlackApiSecret
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn: !Ref FiveTranSigningKeySecret
+      Environment:
+        Variables:
+          SLACK_API_SECRET_ARN: !Ref SlackApiSecret
+          FIVETRAN_SIGNING_KEY_ARN: !Ref FiveTranSigningKeySecret
+
+  FiveTranWebhookRestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: FiveTranWebhookRestApi
+      StageName: Prod
+      TracingEnabled: true
+      MethodSettings:
+        - DataTraceEnabled: true
+          MetricsEnabled: true
+          LoggingLevel: INFO
+          ResourcePath: "/*" # allows for logging on any resource
+          HttpMethod: "*" # allows for logging on any method
+
+# Secrets
+  KMSKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: Encryption key for secrets
+      EnableKeyRotation: true
+      Enabled: true
+      KeyUsage: ENCRYPT_DECRYPT
+      PendingWindowInDays: 30
+      KeyPolicy:
+        Version: "2012-10-17"
+        Id: "KmsKeyPolicy"
+        Statement:
+          - Sid: Enable Administration of the CMK
+            Effect: Allow
+            Principal:
+              AWS:
+                - !Sub "arn:aws:iam::${AWS::AccountId}:root"
+                - !Sub "arn:aws:iam::${AWS::AccountId}:role/CICDStackSetExecutionRole"
+            Action: "kms:*"
+            Resource: "*"
+
+  FiveTranSigningKeySecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: "FiveTranSigningKeySecret"
+      Description: "fiveTran signing key for webhook"
+      SecretString: "FILL_ME_IN"
+      KmsKeyId: !Ref KMSKey
+
+
+  SlackApiSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: "SlackApiSecret"
+      Description: "Slack webhook secret"
+      SecretString: "FILL_ME_IN"
+      KmsKeyId: !Ref KMSKey
+
+
