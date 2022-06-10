@@ -1,9 +1,10 @@
 import axios from 'axios'
 
 export async function sendSlackMessage(
+  slackSecret: string,
     message: string,
     description: string,
-    slackSecret: string,
+   
   ) {
    const url= slackSecret
 
