@@ -11,7 +11,7 @@ The following/requirements are needed.
 
 # Setup
 - Install required packages using ```npm install```.
-- Edit the configuration section in `./ci/scripts/deploy.sh`
+- Edit the configuration section in ```./ci/scripts/deploy.sh```
 - Run ./ci/scripts/deploy.sh
 - Goto secrets mananager and edit ```FiveTranSigningKeySecret``` and ```SlackApiSecret```
 
