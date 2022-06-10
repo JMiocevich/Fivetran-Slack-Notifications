@@ -1,5 +1,5 @@
 # Fivetran Slack Integration
-For more instructions and setup go to [Valheim on AWS BlogPost]()
+For more instructions and setup go to [Valheim on AWS BlogPost](https://mechanicalrock.github.io/2022/06/09/fivetran-webhook-notifications.html)
 
 
 ## Setup
