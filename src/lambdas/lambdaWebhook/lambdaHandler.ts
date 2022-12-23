@@ -32,7 +32,7 @@ function fiveTranSigningVerification(generatedKey: string, fiveTranKey: string) 
   } else throw new Error(`Invalid Signature`)
 }
 
-// opsGenie secret decryption
+// secret decryption
 async function decryptSecret() {
   const slackApiSecretArn: string = process.env.SLACK_API_SECRET_ARN || 'not_set'
   const fiveTranSigningKeyArn: string = process.env.FIVETRAN_SIGNING_KEY_ARN || 'not_set'
